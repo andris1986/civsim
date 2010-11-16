@@ -1,17 +1,48 @@
 #ifndef CDRAWABLE_H
 #define CDRAWABLE_H
 
+/** @brief Base class for all objects that can be drawn on the screen */
+
 class CDrawable {
 public:
-	CDrawable(const CPoint & center, float radius);
+    /** @brief Constructor.
+        @param center Center of the object.
+        @param radius Radius of the object.
+        @todo Implement.
+    */
+    CDrawable(const CPoint & center, float radius);
 
-	CPoint center() const;
-	float radius() const;
-	virtual void paint();
+    /** @brief Get center of the object.
+        @return Center of the object.
+        @todo Implement.
+    */
+    CPoint center() const;
+    
+    /** @brief Get radius of the object.
+        @return radius of the object.
+        @todo Implement.
+    */
+    float radius() const;
+    
+    /** @brief Method is called to paint the object using OpenGL.
+    
+        This method should be reimplemented to get custom look of the object.
+        @todo Implement.
+    */
+    virtual void paint();
 
+    /** @brief Move center of the object.
+        @param direction Direction to move in radians.
+        @param distance Distance to move object in the given direction.
+        @todo Implement.
+    */
+    virtual void move(float direction, float distance);
 private:
-	CPoint m_center;
-	float m_radius;
+    /// Center of the object.
+    CPoint m_center;
+    
+    /// Radius of the object.
+    float m_radius;
 };
 
 #endif //CDRAWABLE_H

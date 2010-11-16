@@ -3,7 +3,7 @@
 
 class CDebug {
 public:
-	static void dbg(char * format, ...);
+    static void dbg(char * format, ...);
 }
 
 #endif //CDEBUG_H
