@@ -1,6 +1,18 @@
-all: main.o
-	g++ main.o -o civsim -lglut
+CC = g++
+OBJDIR = .obj
+SRCDIR = src
+APPNAME = civsim
+LIBS = -lglut
 
-main.o:
-	g++ -c main.cpp -o main.o
+SOURCES = $(shell mkdir -p $(OBJDIR); ls -t $(SRCDIR)/*.cpp) 
+OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+
+all: $(OBJECTS);
+	$(CC) $(LIBS) $(OBJECTS) -o $(APPNAME)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -rf $(OBJDIR) $(APPNAME)
 
