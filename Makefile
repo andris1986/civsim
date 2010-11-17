@@ -4,6 +4,9 @@ SRCDIR = src
 APPNAME = civsim
 LIBS = -lglut
 
+#Uncomment next line to enable debug
+#CFLAGS = -DCIVSIM_DBG
+
 SOURCES = $(shell mkdir -p $(OBJDIR); ls -t $(SRCDIR)/*.cpp) 
 OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
