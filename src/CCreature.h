@@ -26,7 +26,7 @@ public:
     */
     void attack(CCreature & other);
     
-    /** @bried Try to breed with other creature.
+    /** @brief Try to breed with other creature.
         @param other Creature to breed with.
         @todo Implement.
     */
@@ -43,7 +43,7 @@ public:
     */        
     virtual void live(int time);
     
-    /** @brif Move.
+    /** @brief Move.
         @todo Implement.
         @todo Find out how to use doxygen to tell it's reimplemented.
     */

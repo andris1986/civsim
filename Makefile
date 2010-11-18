@@ -3,6 +3,9 @@ OBJDIR = .obj
 SRCDIR = src
 APPNAME = civsim
 LIBS = -lglut
+DOC_APP = doxygen
+DOC_CONFIG = Doxyfile
+DOC_FOLDER = html
 
 #Uncomment next line to enable debug
 #CFLAGS = -DCIVSIM_DBG
@@ -16,6 +19,9 @@ all: $(OBJECTS);
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
+docs:
+	$(DOC_APP) $(DOC_CONFIG)
+
 clean:
-	rm -rf $(OBJDIR) $(APPNAME)
+	rm -rf $(OBJDIR) $(APPNAME) $(DOC_FOLDER)
 
