@@ -1,6 +1,8 @@
 #ifndef CDRAWABLE_H
 #define CDRAWABLE_H
 
+#include "CPoint.h"
+
 /** @brief Base class for all objects that can be drawn on the screen */
 
 class CDrawable {
