@@ -17,6 +17,7 @@ float CResource::take(float amount) {
 }
 
 void CResource::paint() {
+#ifndef C_NO_GL
     float x = center().x();
     float y = center().y();
     float r = radius();
@@ -26,4 +27,5 @@ void CResource::paint() {
         glVertex2f(x + r, y + r);
         glVertex2f(x + r, y - r);
     glEnd();
+#endif //C_NO_GL
 }
