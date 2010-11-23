@@ -1,6 +1,10 @@
 #ifndef CWORLD_H
 #define CWORLD_H
 
+#include <list>
+class CCreature;
+class CResource;
+
 /** @brief World where civilization lives.
 
     This class can only be in one instance.
@@ -12,6 +16,18 @@ private:
         @todo Implement.
     */
     CWorld();
+	
+	/** @brief Time to add on each update */
+	static const int TIME_PER_UPDATE = 1;
+
+	/** @brief Instance of the world */
+	static CWorld * m_instance;
+
+	/** @brief List of the creatures */
+	std::list<CCreature*> m_creatures;
+
+	/** @brief List of the resources */
+	std::list<CResource*> m_resources;
 public:
     /** @brief Painting function 
         @todo Implement.
@@ -31,7 +47,7 @@ public:
         
         The world's object will be created on the first call of this function.
     */
-    CWorld * instance();
-}
+    static CWorld * instance();
+};
 
 #endif //CWORLD_H

@@ -39,7 +39,8 @@ public:
         @todo Implement.
     */
     virtual void move(float direction, float distance);
-private:
+
+protected:
     /// Center of the object.
     CPoint m_center;
     

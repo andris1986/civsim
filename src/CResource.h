@@ -7,7 +7,10 @@
 
 class CResource : public CDrawable {
 private:
+    /** @brief Default radius of the resource */
     static const float DEFAULT_RESOURCE_RADIUS = 0.02;
+    
+    /** @brief Amount of the resources available */
     float m_amount;
 public:
     /** @brief Constructor. Create new resource at the given center.
