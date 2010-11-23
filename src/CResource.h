@@ -4,6 +4,7 @@
 /** @brief Any resource that can bee needed by the creatures. */
 
 class CResource : public CDrawable {
+public:
     /** @brief Constructor. Create new resource at the given center.
         @param center Center of the resource.
         @todo Implement.
@@ -28,6 +29,6 @@ class CResource : public CDrawable {
 
     /** @brief Painting function of the resource. */
     virtual void paint();
-}
+};
 
-#endif CRESOURCE_H
+#endif //CRESOURCE_H

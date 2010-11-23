@@ -44,3 +44,4 @@ float CPoint::distanceTo(const CPoint & other) const{
 	float dy = fabs(m_y - other.m_y);
 	return sqrt(dx * dx + dy * dy);
 }
+
