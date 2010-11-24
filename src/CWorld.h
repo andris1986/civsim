@@ -13,7 +13,6 @@ class CResource;
 class CWorld {
 private:
     /** @brief Constructor. 
-        @todo Implement.
     */
     CWorld();
 	
@@ -29,25 +28,51 @@ private:
 	/** @brief List of the resources */
 	std::list<CResource*> m_resources;
 public:
-    /** @brief Painting function 
-        @todo Implement.
-    */
+    /** @brief Painting function */
     static void paint();
     
     /** @brief Update the world.
-        @todo Implement.
+        @todo comment on v parameter
     
         This function should controls all processing of the world's elements
     */
-    static void update();
+    static void update(int v);
     
     /** @brief Get instance of the world.
         @return Instance of the world.
-        @todo Implement.
         
         The world's object will be created on the first call of this function.
     */
     static CWorld * instance();
+
+    /** @brief Initialize the world 
+        @param argc Number or arguments
+        @param argv List of the arguments
+    */
+    static void init(int argc, char ** argv);
+
+    /** @brief Add new creature
+        @param c Creature to add
+    */
+    void addCreature(CCreature * c);
+
+    /** @brief Remove a creature
+        @param c Creature to remove
+    */
+    void removeCreature(CCreature * c);
+
+    /** @brief Add new resource
+        @param r Resource to add
+    */
+    void addResource(CResource * r);
+
+    /** @brief Remove a resource
+        @param r Resource to remove
+    */
+    void removeResource(CResource * r);
+
+    /** @brief Main loop of the application */
+    void run();
 };
 
 #endif //CWORLD_H
