@@ -40,6 +40,12 @@ public:
     */
     virtual void move(float direction, float distance);
 
+	/** @brief Load position in the tile matrix to the passed parameters
+		@param x X coordinate of the tile
+		@param y Y coordinate of the tile
+	*/
+	void loadTilePos(int & x, int & y);
+
 protected:
     /// Center of the object.
     CPoint m_center;

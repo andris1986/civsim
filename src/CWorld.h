@@ -11,6 +11,9 @@ class CResource;
 */
 
 class CWorld {
+public:
+	/** @brief Size of the tile matrix */
+	static const int TILE_COUNT = 100;
 private:
     /** @brief Constructor. 
     */
@@ -27,6 +30,8 @@ private:
 
 	/** @brief List of the resources */
 	std::list<CResource*> m_resources;
+
+	std::list<CCreature*> m_creaturePosIndex[TILE_COUNT][TILE_COUNT];
 public:
     /** @brief Painting function */
     static void paint();
