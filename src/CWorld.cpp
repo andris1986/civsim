@@ -1,6 +1,8 @@
 #include "CWorld.h"
 #include "CCreature.h"
 #include "CResource.h"
+#include "CPoint.h"
+#include "CDebug.h"
 #include <math.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -8,8 +10,10 @@
 CWorld * CWorld::m_instance = NULL;
 
 CWorld::CWorld() {
-	if(!m_instance) {		
-		/// @todo Create creatures here
+	if(!m_instance) {
+		m_creatures.push_back(new CCreature(CCreature::GENDER_MALE, CPoint(0,0), NULL, NULL));
+		CPoint p(-0.5, -0.5);
+		m_resources.push_back(new CResource(p, 1.0f));
 	}
 	else {
 		throw 0;
