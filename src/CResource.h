@@ -14,6 +14,7 @@ public:
 		RES_TYPE_COUNT  ///< Number of the resource types. This should always be the last
 	}ResourceType;
     /** @brief Constructor. Create new resource at the given center.
+		@param type Type fo the resource.
         @param center Center of the resource.
         @param amount Amount of the resources available
         @todo Implement.
