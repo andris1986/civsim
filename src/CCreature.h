@@ -2,9 +2,11 @@
 #define CCREATURE_H
 
 #include <list>
+#include <vector>
 
 #include "CDrawable.h"
 #include "CPoint.h"
+#include "CResource.h"
 
 class CTribe;
 
@@ -17,6 +19,16 @@ public:
 		GENDER_MALE, ///< Male
 		GENDER_FEMALE, ///< Female
 	} Gender;
+
+	/** @brief Structure describe need of creature for certain resources */
+	typedef struct {
+		float curAmount; 					///< Current amount in the creature
+		float minAmount; 					///< Minimum amount, if @ref curAmount < @ref minAmount, creature will die
+		float maxAmount; 					///< Maximum amount that creature can have
+		float needLimit; 					///< Creature will start looking for resources if @ref curAmount < @ref needLimit
+		CResource::ResourceType resType;    ///< Type of the resource
+		float needPerTime;					///< Amount of the reousrces that creature consumes every time unit
+	} ResourceNeed;
 
 	/** @brief Minimum health */
 	static const float MIN_HEALTH = 0.0;
@@ -86,6 +98,9 @@ private:
 
 	/** @brief Children of the creature */
 	std::list<CCreature*> m_children;
+
+	/** @brief Needs of the creature sorted by priority. Sorting is done internally */
+	std::vector<ResourceNeed> m_needs;
 
 	/** @brief Get pregnant 
 		@return true on success, false on failure

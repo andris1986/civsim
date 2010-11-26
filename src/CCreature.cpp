@@ -19,6 +19,17 @@ CCreature::CCreature(Gender gender, const CPoint & center, CTribe * tribe, CCrea
 
 	m_age = 0;
 	m_health = MAX_HEALTH;
+
+	ResourceNeed need = {
+		0.5,
+		0.1,
+		1.0,
+		0.7,
+		CResource::RES_TYPE_WATER,
+		0.001,
+	};
+
+	m_needs.insert(m_needs.begin(), need);
 }
 
 CCreature::~CCreature() {
