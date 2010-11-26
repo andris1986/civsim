@@ -13,7 +13,7 @@ CWorld::CWorld() {
 	if(!m_instance) {
 		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21), NULL, NULL));
 		CPoint p(-0.5, -0.5);
-		addResource(new CResource(p, 1.0f));
+		addResource(new CResource(CResource::RES_TYPE_WATER, p, 1.0f));
 	}
 	else {
 		throw 0;
@@ -85,10 +85,16 @@ void CWorld::removeCreature(CCreature * c) {
 void CWorld::addResource(CResource * r) {
     /// @todo Need to exclude double insertion of resources
     m_resources.push_back(r);
+	int x, y;
+	r->loadTilePos(x, y);
+	m_resourcePosTypeIndex[x][y][r->type()].push_back(r);
 }
 
 void CWorld::removeResource(CResource * r) {
     m_resources.remove(r);
+	int x, y;
+	r->loadTilePos(x, y);
+	m_resourcePosTypeIndex[x][y][r->type()].remove(r);
 }
 
 void CWorld::run() {

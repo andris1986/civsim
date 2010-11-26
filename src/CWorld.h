@@ -2,8 +2,9 @@
 #define CWORLD_H
 
 #include <list>
+#include "CResource.h"
+
 class CCreature;
-class CResource;
 
 /** @brief World where civilization lives.
 
@@ -31,7 +32,11 @@ private:
 	/** @brief List of the resources */
 	std::list<CResource*> m_resources;
 
+	/** @brief Index of creatures by their position */
 	std::list<CCreature*> m_creaturePosIndex[TILE_COUNT][TILE_COUNT];
+
+	/** @brief Index of resources by their position and type */
+	std::list<CResource*> m_resourcePosTypeIndex[TILE_COUNT][TILE_COUNT][CResource::RES_TYPE_COUNT];
 public:
     /** @brief Painting function */
     static void paint();

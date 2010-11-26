@@ -2,8 +2,9 @@
 #include <GL/glut.h>
 #include "CResource.h"
 
-CResource::CResource(CPoint & center, float amount) : CDrawable(center, CResource::DEFAULT_RESOURCE_RADIUS) {
+CResource::CResource(CResource::ResourceType type, CPoint & center, float amount) : CDrawable(center, CResource::DEFAULT_RESOURCE_RADIUS) {
     m_amount = amount;
+	m_type = type;
 }
 
 float CResource::amount() const {
@@ -28,4 +29,8 @@ void CResource::paint() {
         glVertex2f(x + r, y - r);
     glEnd();
 #endif //C_NO_GL
+}
+
+CResource::ResourceType CResource::type() {
+	return m_type;
 }
