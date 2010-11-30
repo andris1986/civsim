@@ -77,6 +77,11 @@ public:
         @todo Find out how to use doxygen to tell it's reimplemented.
     */
     virtual void move(float direction, float distance);
+
+	/** @brief Get vision of the creature
+		@return Vision in tiles
+	*/
+	int vision() const;
 private:
 	/** @brief Age of the creature */
 	int m_age;
@@ -101,6 +106,12 @@ private:
 
 	/** @brief Needs of the creature sorted by priority. Sorting is done internally */
 	std::vector<ResourceNeed> m_needs;
+
+	/** @brief Vision - how far a creature can see.
+
+		This is a value from 0 (blind) to @ref CWorld::TILE_COUNT.
+	*/
+	int m_vision;
 
 	/** @brief Get pregnant 
 		@return true on success, false on failure

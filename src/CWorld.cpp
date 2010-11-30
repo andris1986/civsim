@@ -36,13 +36,17 @@ void CWorld::paint() {
 
 	CWorld * w = instance();
 	
+	int x, y;
+
 	std::list<CCreature*>::iterator creatureIt;
 	for(creatureIt = w->m_creatures.begin(); creatureIt != w->m_creatures.end(); creatureIt++) {
+		(*creatureIt)->loadTilePos(x, y);
 		(*creatureIt)->paint();
 	}
 
 	std::list<CResource*>::iterator resourceIt;
 	for(resourceIt = w->m_resources.begin(); resourceIt != w->m_resources.end(); resourceIt++) {
+		(*resourceIt)->loadTilePos(x, y);
 		(*resourceIt)->paint();
 	}
 
@@ -72,7 +76,6 @@ void CWorld::addCreature(CCreature * c) {
 	int x, y;
 	c->loadTilePos(x, y);
 	m_creaturePosIndex[x][y].push_back(c);
-	C_DBG("pos: %d %d\n", x, y);
 }
 
 void CWorld::removeCreature(CCreature * c) {
@@ -99,5 +102,28 @@ void CWorld::removeResource(CResource * r) {
 
 void CWorld::run() {
     glutMainLoop();
+}
+
+std::list<CResource*> CWorld::visibleResources(const CCreature & creature, CResource::ResourceType resourceType) const{
+	std::list<CResource*> res;
+	int centerX;
+	int centerY;
+	int halfVision = creature.vision() / 2;
+	creature.loadTilePos(centerX, centerY);
+
+	int minX = centerX - halfVision;
+	int maxX = centerX + halfVision;
+	int minY = centerY - halfVision;
+	int maxY = centerY + halfVision;
+
+	int i, j;
+	for(i = minX; i < maxX; ++i) {
+		for(j = minY; j < maxY; ++j) {
+			if(!m_resourcePosTypeIndex[i][j][resourceType].empty()){				
+				res.insert(res.begin(),m_resourcePosTypeIndex[i][j][resourceType].begin(), m_resourcePosTypeIndex[i][j][resourceType].end());
+			}
+		}
+	}
+	return res;
 }
 

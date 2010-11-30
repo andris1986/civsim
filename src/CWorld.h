@@ -83,6 +83,13 @@ public:
 
     /** @brief Main loop of the application */
     void run();
+
+	/** @brief Get list of resources that are visible to the creature 
+		@param creature Creature who's visible resources will be returned
+		@param resourceType Type of the resources to look for
+		@return List of visible resources. Pointers to the resources should not be deleted.
+	*/
+	std::list<CResource*> visibleResources(const CCreature & creature, CResource::ResourceType resourceType) const;
 };
 
 #endif //CWORLD_H

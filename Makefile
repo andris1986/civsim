@@ -12,7 +12,7 @@ TESTAPP = civsim_ut
 TESTLIBS = -lgtest
 
 #Uncomment next line to enable debug
-#CFLAGS = -DCIVSIM_DBG
+CFLAGS = -DCIVSIM_DBG
 
 #Unconnect next line to compile without GL
 #CFLAGS = -DC_NO_GL

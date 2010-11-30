@@ -44,7 +44,7 @@ public:
 		@param x X coordinate of the tile
 		@param y Y coordinate of the tile
 	*/
-	void loadTilePos(int & x, int & y);
+	void loadTilePos(int & x, int & y) const;
 
 protected:
     /// Center of the object.

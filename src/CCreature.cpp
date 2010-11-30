@@ -2,12 +2,16 @@
 
 #include "CCreature.h"
 #include "CTribe.h"
+#include "CWorld.h"
+#include "CDebug.h"
 
 CCreature::CCreature(Gender gender, const CPoint & center, CTribe * tribe, CCreature * parent)
 				     : CDrawable(center, CCreature::DEFAULT_RADIUS) {	
 	m_tribe = tribe;
 	m_parent = parent;
 	m_gender = gender;
+	/// @todo Some constant would be useful.
+	m_vision = 28;
 
 	if(parent) {
 		parent->addChild(*this);
@@ -101,5 +105,9 @@ void CCreature::addChild(CCreature & c) {
 void CCreature::removeChild(CCreature & c) {
 	m_children.remove(&c);
 	c.m_parent = NULL;
+}
+
+int CCreature::vision() const {
+	return m_vision;
 }
 

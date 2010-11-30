@@ -22,7 +22,7 @@ void CDrawable::move(float direction, float distance) {
     m_center.move(direction, distance);
 }
 
-void CDrawable::loadTilePos(int & x, int & y) {
+void CDrawable::loadTilePos(int & x, int & y) const {
 	static float tileSize = 2.0 / CWorld::TILE_COUNT;
 	x = (int)((center().x() + 1.0) / tileSize);
 	y = (int)((center().y() + 1.0) / tileSize);
