@@ -60,6 +60,7 @@ void CWorld::update(int v) {
 		(*creatureIt)->live(TIME_PER_UPDATE);
 	}
     glutTimerFunc(100, CWorld::update, 0);
+	glutPostRedisplay();
 }
 
 CWorld * CWorld::instance() {
@@ -108,13 +109,12 @@ std::list<CResource*> CWorld::visibleResources(const CCreature & creature, CReso
 	std::list<CResource*> res;
 	int centerX;
 	int centerY;
-	int halfVision = creature.vision() / 2;
 	creature.loadTilePos(centerX, centerY);
 
-	int minX = centerX - halfVision;
-	int maxX = centerX + halfVision;
-	int minY = centerY - halfVision;
-	int maxY = centerY + halfVision;
+	int minX = centerX - creature.vision();
+	int maxX = centerX + creature.vision();
+	int minY = centerY - creature.vision();
+	int maxY = centerY + creature.vision();
 
 	int i, j;
 	for(i = minX; i < maxX; ++i) {

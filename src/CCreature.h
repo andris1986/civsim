@@ -37,7 +37,7 @@ public:
 	static const float MAX_HEALTH = 1.0;
 
 	/** @brief Default radius of the creature */
-	static const float DEFAULT_RADIUS = 0.02;
+	static const float DEFAULT_RADIUS = 0.05;
 
     /** @brief Constructor.
 		@param gender Gender of the creature
@@ -133,6 +133,9 @@ private:
 		@param c Child to remove
 	*/
 	void removeChild(CCreature & c);
+
+	/** @brief Check if all parameters needed to live are fine, die if something is wrong */
+	void checkDeath();
 
 };
 

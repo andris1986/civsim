@@ -11,7 +11,7 @@ CCreature::CCreature(Gender gender, const CPoint & center, CTribe * tribe, CCrea
 	m_parent = parent;
 	m_gender = gender;
 	/// @todo Some constant would be useful.
-	m_vision = 28;
+	m_vision = 14;
 
 	if(parent) {
 		parent->addChild(*this);
@@ -68,17 +68,43 @@ void CCreature::paint() {
 	float y = center().y();
 	float r = radius();
 
+#ifdef CIVSIM_DBG
+	// Change color to see dead creatures
+	glColor3f(1.0, m_alive ? 1.0 : 0.0,m_alive ? 1.0 : 0.0);
+#endif
 	glBegin(GL_QUADS);
 		glVertex2f(x - r, y - r);
 		glVertex2f(x - r, y + r);
 		glVertex2f(x + r, y + r);
 		glVertex2f(x + r, y - r);
 	glEnd();
+
+#ifdef CIVSIM_DBG
+	// Draw border around the creature to see it's visible area
+	float visionDistance = m_vision * (2.0 / CWorld::TILE_COUNT);
+	glBegin(GL_LINE_LOOP);
+		glVertex2f(x - visionDistance, y - visionDistance);
+		glVertex2f(x - visionDistance, y + visionDistance);
+		glVertex2f(x + visionDistance, y + visionDistance);
+		glVertex2f(x + visionDistance, y - visionDistance);
+	glEnd();
+#endif
+
+
 #endif //C_NO_GL
 }
 
 void CCreature::live(int time) {
-	m_age += time;
+	if(m_alive) {
+		m_age += time;
+		std::vector<ResourceNeed>::iterator it;
+		for(it = m_needs.begin(); it != m_needs.end(); ++it) {
+			ResourceNeed & need = *it;
+			need.curAmount -= (need.needPerTime * time);
+			printf("cur: %f min: %f alive: %s\n",need.curAmount, need.minAmount, m_alive ? "true" : "false");
+			checkDeath();
+		}
+	}
 }
 
 void CCreature::move(float direction, float distance) {
@@ -109,5 +135,24 @@ void CCreature::removeChild(CCreature & c) {
 
 int CCreature::vision() const {
 	return m_vision;
+}
+
+void CCreature::checkDeath() {
+	bool dead = false;
+	if(m_health <= 0) {
+		dead = true;
+	}
+	else {
+		std::vector<ResourceNeed>::iterator it;
+		for(it = m_needs.begin(); it != m_needs.end(); ++it) {
+			ResourceNeed & need = *it;
+			if(need.curAmount < need.minAmount) {
+				dead = true;
+				break;
+			}
+		}
+	}
+	
+	m_alive = !dead;
 }
 
