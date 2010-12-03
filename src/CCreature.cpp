@@ -63,7 +63,6 @@ void CCreature::breed(CCreature & other) {
 }
 
 void CCreature::paint() {
-#ifndef C_NO_GL
 	float x = center().x();
 	float y = center().y();
 	float r = radius();
@@ -90,8 +89,6 @@ void CCreature::paint() {
 	glEnd();
 #endif
 
-
-#endif //C_NO_GL
 }
 
 void CCreature::live(int time) {
@@ -100,8 +97,7 @@ void CCreature::live(int time) {
 		std::vector<ResourceNeed>::iterator it;
 		for(it = m_needs.begin(); it != m_needs.end(); ++it) {
 			ResourceNeed & need = *it;
-			need.curAmount -= (need.needPerTime * time);
-			printf("cur: %f min: %f alive: %s\n",need.curAmount, need.minAmount, m_alive ? "true" : "false");
+			need.curAmount -= (need.needPerTime * time);			
 			checkDeath();
 		}
 	}
