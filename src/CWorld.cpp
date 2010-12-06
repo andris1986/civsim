@@ -12,8 +12,8 @@ CWorld::CWorld() {
 	if(!m_instance) {
 		m_zoom = 1.1;
 		m_xRotate = 0.0;
-		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21), NULL, NULL));
-		CPoint p(-0.5, -0.5);
+		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21, 0.0), NULL, NULL));
+		CPoint p(-0.5, -0.5, 0.0);
 		addResource(new CResource(CResource::RES_TYPE_WATER, p, 1.0f));
 	}
 	else {
@@ -32,7 +32,7 @@ void CWorld::init(int argc, char ** argv) {
 	glutReshapeFunc(CWorld::reshape);
     glutTimerFunc(100, CWorld::update, 0);	    
     glClearColor(0.0,0.0,0.0,0.0);
-	glShadeModel(GL_FLAT);
+	glShadeModel(GL_SMOOTH);
 }
 
 void CWorld::paint() {
@@ -43,7 +43,6 @@ void CWorld::paint() {
 	int x, y;
 
 	glLoadIdentity();
-	C_DBG("zoom: %f\n",w->m_zoom);
 	gluLookAt(0.0, 0.0, w->m_zoom, 0.0, 0.0, -100, 0.0, 1.0, -2.0);	
 	glRotatef(w->m_xRotate, 1.0, 0.0, 0.0);
 

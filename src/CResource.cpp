@@ -20,13 +20,12 @@ float CResource::take(float amount) {
 void CResource::paint() {
     float x = center().x();
     float y = center().y();
+	float z = center().z();
     float r = radius();
-    glBegin(GL_QUADS);        
-        glVertex2f(x - r, y - r);
-        glVertex2f(x - r, y + r);
-        glVertex2f(x + r, y + r);
-        glVertex2f(x + r, y - r);
-    glEnd();
+
+	glTranslatef(x, y, z);
+	glutSolidSphere(r, 5, 5);
+	glTranslatef(-x, -y, -z);
 }
 
 CResource::ResourceType CResource::type() {

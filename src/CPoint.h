@@ -14,10 +14,11 @@ public:
     /** @brief Constructor.
         @param x X coordinate of the point.
         @param y Y coordinate of the point.
+		@param z Z coordinate of the point
         
         Create point at the given x, y position.
     */    
-    CPoint(float x, float y);
+    CPoint(float x, float y, float z);
     
     /** @brief Set x value of the point.
         @param x New x value.
@@ -29,13 +30,15 @@ public:
     */        
     void setY(float y);
     
+	void setZ(float z);
+
     /** @brief Move point to the specified x, y position.
         @param x New x value.
         @param y New y value.
         
         This is equivalent to calling setX(); setY();.
     */
-    void moveTo(float x, float y);
+    void moveTo(float x, float y, float z);
     
     /** @brief Move the point.
         @param direction Direction in radians.
@@ -52,6 +55,8 @@ public:
         @return Y coordinate of the point.
     */
     float y() const;
+
+	float z() const;
     
     /** @brief Distance from one point to another.
         @param other Point to measure distance to.
@@ -62,6 +67,7 @@ public:
 private:
 	float m_x;
 	float m_y;
+	float m_z;
 };
 
 #endif //CPOINT_H

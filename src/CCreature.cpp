@@ -1,4 +1,4 @@
-#include <GL/gl.h>
+#include <GL/glut.h>
 
 #include "CCreature.h"
 #include "CTribe.h"
@@ -65,18 +65,17 @@ void CCreature::breed(CCreature & other) {
 void CCreature::paint() {
 	float x = center().x();
 	float y = center().y();
+	float z = center().z();
 	float r = radius();
 
 #ifdef CIVSIM_DBG
 	// Change color to see dead creatures
 	glColor3f(1.0, m_alive ? 1.0 : 0.0,m_alive ? 1.0 : 0.0);
 #endif
-	glBegin(GL_QUADS);
-		glVertex2f(x - r, y - r);
-		glVertex2f(x - r, y + r);
-		glVertex2f(x + r, y + r);
-		glVertex2f(x + r, y - r);
-	glEnd();
+
+	glTranslatef(x, y, z);
+	glutSolidSphere(r, 10, 10);
+	glTranslatef(-x, -y, -z);
 
 #ifdef CIVSIM_DBG
 	// Draw border around the creature to see it's visible area
