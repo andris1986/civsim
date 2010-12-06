@@ -74,7 +74,7 @@ void CCreature::paint() {
 #endif
 
 	glTranslatef(x, y, z);
-	glutSolidSphere(r, 10, 10);
+	glutSolidCone(r, 2.0 * r, 10, 10);
 	glTranslatef(-x, -y, -z);
 
 #ifdef CIVSIM_DBG

@@ -24,7 +24,7 @@ void CResource::paint() {
     float r = radius();
 
 	glTranslatef(x, y, z);
-	glutSolidSphere(r, 5, 5);
+	glutSolidCube(r);
 	glTranslatef(-x, -y, -z);
 }
 
