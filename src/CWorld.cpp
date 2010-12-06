@@ -4,13 +4,14 @@
 #include "CPoint.h"
 #include "CDebug.h"
 #include <math.h>
-#include <GL/gl.h>
 #include <GL/glut.h>
 
 CWorld * CWorld::m_instance = NULL;
 
 CWorld::CWorld() {
 	if(!m_instance) {
+		m_zoom = 1.1;
+		m_xRotate = 0.0;
 		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21), NULL, NULL));
 		CPoint p(-0.5, -0.5);
 		addResource(new CResource(CResource::RES_TYPE_WATER, p, 1.0f));
@@ -27,8 +28,11 @@ void CWorld::init(int argc, char ** argv) {
     glutInitWindowSize(300, 300);
     glutCreateWindow("Civsim");
     glutDisplayFunc(CWorld::paint);
+	glutKeyboardFunc(CWorld::keyPress);
+	glutReshapeFunc(CWorld::reshape);
     glutTimerFunc(100, CWorld::update, 0);	    
     glClearColor(0.0,0.0,0.0,0.0);
+	glShadeModel(GL_FLAT);
 }
 
 void CWorld::paint() {
@@ -37,6 +41,11 @@ void CWorld::paint() {
 	CWorld * w = instance();
 	
 	int x, y;
+
+	glLoadIdentity();
+	C_DBG("zoom: %f\n",w->m_zoom);
+	gluLookAt(0.0, 0.0, w->m_zoom, 0.0, 0.0, -100, 0.0, 1.0, -2.0);	
+	glRotatef(w->m_xRotate, 1.0, 0.0, 0.0);
 
 	std::list<CCreature*>::iterator creatureIt;
 	for(creatureIt = w->m_creatures.begin(); creatureIt != w->m_creatures.end(); creatureIt++) {
@@ -127,3 +136,22 @@ std::list<CResource*> CWorld::visibleResources(const CCreature & creature, CReso
 	return res;
 }
 
+void CWorld::keyPress(unsigned char key, int x, int y) {
+	CWorld * w = CWorld::instance();
+	switch(key) {
+		case '+': w->m_zoom -= 0.1; break;
+		case '-': w->m_zoom += 0.1; break;
+		case 's': w->m_xRotate += 1.0; break;
+		case 'w': w->m_xRotate -= 1.0; break;
+	}
+	glutPostRedisplay();
+}
+
+void CWorld::reshape(int w, int h) {
+	glViewport(0, 0, (GLsizei) w, (GLsizei) h);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 20.0);
+	glMatrixMode(GL_MODELVIEW);
+	
+}

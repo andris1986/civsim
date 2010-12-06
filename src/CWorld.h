@@ -37,6 +37,9 @@ private:
 
 	/** @brief Index of resources by their position and type */
 	std::list<CResource*> m_resourcePosTypeIndex[TILE_COUNT][TILE_COUNT][CResource::RES_TYPE_COUNT];
+
+	float m_zoom;
+	float m_xRotate;
 public:
     /** @brief Painting function */
     static void paint();
@@ -48,6 +51,10 @@ public:
     */
     static void update(int v);
     
+	static void keyPress(unsigned char key, int x, int y);
+
+	static void reshape(int w, int h);
+
     /** @brief Get instance of the world.
         @return Instance of the world.
         
