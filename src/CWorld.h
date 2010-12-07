@@ -14,7 +14,7 @@ class CCreature;
 class CWorld {
 public:
 	/** @brief Size of the tile matrix */
-	static const int TILE_COUNT = 50;
+	static const int TILE_COUNT = 100;
 private:
     /** @brief Constructor. 
     */
@@ -45,11 +45,10 @@ public:
     static void paint();
     
     /** @brief Update the world.
-        @todo comment on v parameter
     
         This function should controls all processing of the world's elements
     */
-    static void update(int v);
+    static void update();
     
 	static void keyPress(unsigned char key, int x, int y);
 

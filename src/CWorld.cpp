@@ -5,8 +5,13 @@
 #include "CDebug.h"
 #include <math.h>
 #include <GL/glut.h>
+#include <time.h>
 
 CWorld * CWorld::m_instance = NULL;
+
+float genCoord(){
+    return ((float)(rand() % 200)) / 100.0 - 1.0;
+}
 
 CWorld::CWorld() {
 	if(!m_instance) {
@@ -15,10 +20,11 @@ CWorld::CWorld() {
 		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21, 0.0), NULL, NULL));
 		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(0.3,-0.21, 0.0), NULL, NULL));
 		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(0.3,0.21, 0.0), NULL, NULL));
-		addResource(new CResource(CResource::RES_TYPE_WATER, CPoint(-0.5, -0.5, 0.0), 1.0f));
-		addResource(new CResource(CResource::RES_TYPE_WATER, CPoint(0.5, 0.5, 0.0), 1.0f));
-		addResource(new CResource(CResource::RES_TYPE_FOOD, CPoint(-0.5, 0.5, 0.0), 1.0f));
-		addResource(new CResource(CResource::RES_TYPE_FOOD, CPoint(0.5, -0.5, 0.0), 1.0f));
+
+        for(int i=0;i<100; i++){
+		    addResource(new CResource(CResource::RES_TYPE_WATER, CPoint(genCoord(), genCoord(), 0.0), 1.0f));
+            addResource(new CResource(CResource::RES_TYPE_FOOD, CPoint(genCoord(), genCoord(), 0.0), 1.0f));
+        }
 	}
 	else {
 		throw 0;
@@ -29,14 +35,16 @@ void CWorld::init(int argc, char ** argv) {
     glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowPosition(0, 0);
-    glutInitWindowSize(300, 300);
+    glutInitWindowSize(600, 600);
     glutCreateWindow("Civsim");
     glutDisplayFunc(CWorld::paint);
 	glutKeyboardFunc(CWorld::keyPress);
 	glutReshapeFunc(CWorld::reshape);
-    glutTimerFunc(50, CWorld::update, 0);	    
+    //glutTimerFunc(50, CWorld::update, 0);	    
+    glutIdleFunc(CWorld::update);
     glClearColor(0.0,0.0,0.0,0.0);
 	glShadeModel(GL_SMOOTH);
+    srand(time(NULL));
 }
 
 void CWorld::paint() {
@@ -65,13 +73,13 @@ void CWorld::paint() {
 	glutSwapBuffers();
 }
 
-void CWorld::update(int v) {
+void CWorld::update() {
 	CWorld * w = instance();
 	std::list<CCreature *>::iterator creatureIt;
 	for(creatureIt = w->m_creatures.begin(); creatureIt != w->m_creatures.end(); creatureIt++) {
 		(*creatureIt)->live(TIME_PER_UPDATE);
 	}
-    glutTimerFunc(50, CWorld::update, 0);
+    //glutTimerFunc(50, CWorld::update, 0);
 	glutPostRedisplay();
 }
 

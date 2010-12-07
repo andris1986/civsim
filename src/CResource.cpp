@@ -31,6 +31,11 @@ void CResource::paint() {
 	float z = center().z();
     float r = radius();
 
+    switch(m_type){
+        case CResource::RES_TYPE_FOOD: glColor3f(0.0, 1.0, 0.0); break;
+        case CResource::RES_TYPE_WATER: glColor3f(0.0, 0.0, 1.0); break;
+        default: break;
+    }
 	glTranslatef(x, y, z);
 	glutSolidCube(r);
 	glTranslatef(-x, -y, -z);

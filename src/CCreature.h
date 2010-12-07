@@ -119,6 +119,8 @@ private:
 
     float m_stepSize;
 
+    float m_randomDirection;
+
 	/** @brief Get pregnant 
 		@return true on success, false on failure
 	*/

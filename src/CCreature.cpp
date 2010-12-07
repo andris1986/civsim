@@ -13,8 +13,9 @@ CCreature::CCreature(Gender gender, const CPoint & center, CTribe * tribe, CCrea
 	m_gender = gender;
 	m_alive = true;
 	m_followedResource = NULL;
-    m_stepSize = 0.005;	
+    m_stepSize = (2.0 / CWorld::TILE_COUNT / 10.0);
 	m_vision = 10;
+    m_randomDirection = rand() % 360;
 
 	if(parent) {
 		parent->addChild(*this);
@@ -127,10 +128,18 @@ void CCreature::live(int time) {
 					
 					std::list<CResource*> res = w->visibleResources(*this, need.resType);
 					if(res.size() > 0){
+                        std::list<CResource*>::iterator resIt;
+                        CResource * closestResource = *res.begin();
+                        for(resIt = res.begin(); resIt != res.end(); ++resIt) {
+                            if((*resIt)->center().distanceTo(center()) < closestResource->center().distanceTo(center())){
+                                closestResource = *resIt;
+                            }
+                        }
+                        
 						if(m_followedResource){
 							m_followedResource->unfollow(this);
 						}
-						(*res.begin())->follow(this);
+						closestResource->follow(this);
 						break;
 					}
 				}
@@ -143,7 +152,8 @@ void CCreature::live(int time) {
 
 					if(m_followedResource->amount() <= 0){
 						w->removeResource(m_followedResource);
-						delete m_followedResource;						
+						delete m_followedResource;
+                        m_randomDirection = rand() % 360;
 					}
 				}
 				else {
@@ -151,7 +161,10 @@ void CCreature::live(int time) {
 				}
 			}
 			else {
-				move(rand()%360, m_stepSize);
+				move(m_randomDirection, m_stepSize);
+                if(center().x() < -1.0 || center().x() > 1.0 || center().y() < -1.0 || center().y() > 1.0){
+                    m_randomDirection += 180.0;
+                }
 			}
 		}
 	}
