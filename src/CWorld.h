@@ -14,7 +14,7 @@ class CCreature;
 class CWorld {
 public:
 	/** @brief Size of the tile matrix */
-	static const int TILE_COUNT = 100;
+	static const int TILE_COUNT = 50;
 private:
     /** @brief Constructor. 
     */

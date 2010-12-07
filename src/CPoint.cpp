@@ -58,3 +58,8 @@ float CPoint::distanceTo(const CPoint & other) const{
 	return sqrt(xy * xy + dz * dz);
 }
 
+float CPoint::angleTo(const CPoint & other) const {
+	float dx = other.m_x - m_x;
+	float dy = other.m_y - m_y;
+	return atan2(dy, dx);
+}

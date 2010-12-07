@@ -46,6 +46,8 @@ public:
 	*/
 	void loadTilePos(int & x, int & y) const;
 
+	bool intersect(const CDrawable & other) const;
+
 protected:
     /// Center of the object.
     CPoint m_center;

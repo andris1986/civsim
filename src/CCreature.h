@@ -82,6 +82,8 @@ public:
 		@return Vision in tiles
 	*/
 	int vision() const;
+
+	void setFollowedResource(CResource * res);
 private:
 	/** @brief Age of the creature */
 	int m_age;
@@ -113,6 +115,10 @@ private:
 	*/
 	int m_vision;
 
+	CResource * m_followedResource;
+
+    float m_stepSize;
+
 	/** @brief Get pregnant 
 		@return true on success, false on failure
 	*/
@@ -136,6 +142,8 @@ private:
 
 	/** @brief Check if all parameters needed to live are fine, die if something is wrong */
 	void checkDeath();
+
+	static inline bool compareNeeds(const ResourceNeed & n1, const ResourceNeed & n2);
 
 };
 

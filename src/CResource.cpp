@@ -1,10 +1,18 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include "CResource.h"
+#include "CCreature.h"
 
-CResource::CResource(CResource::ResourceType type, CPoint & center, float amount) : CDrawable(center, CResource::DEFAULT_RESOURCE_RADIUS) {
+CResource::CResource(CResource::ResourceType type, const CPoint & center, float amount) : CDrawable(center, CResource::DEFAULT_RESOURCE_RADIUS) {
     m_amount = amount;
 	m_type = type;
+}
+
+CResource::~CResource() {
+	std::list<CCreature *>::iterator it;
+	for(it = m_followers.begin(); it != m_followers.end(); ++it) {
+		(*it)->setFollowedResource(NULL);
+	}
 }
 
 float CResource::amount() const {
@@ -30,4 +38,14 @@ void CResource::paint() {
 
 CResource::ResourceType CResource::type() {
 	return m_type;
+}
+
+void CResource::follow(CCreature * c) {
+	m_followers.push_back(c);
+	c->setFollowedResource(this);
+}
+
+void CResource::unfollow(CCreature * c) {
+	m_followers.remove(c);
+	c->setFollowedResource(NULL);
 }

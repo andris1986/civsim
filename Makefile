@@ -12,7 +12,7 @@ TESTAPP = civsim_ut
 TESTLIBS = -lgtest
 
 #Uncomment next line to enable debug
-CFLAGS = -DCIVSIM_DBG
+CFLAGS = -DCIVSIM_DBG -g
 
 SOURCES = $(shell mkdir -p $(OBJDIR); ls -t $(SRCDIR)/*.cpp) 
 OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)

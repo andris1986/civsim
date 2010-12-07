@@ -63,6 +63,8 @@ public:
         @return Distance to the point.
     */
     float distanceTo(const CPoint & other) const;
+
+	float angleTo(const CPoint & other) const;
 	
 private:
 	float m_x;

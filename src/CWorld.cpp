@@ -13,8 +13,12 @@ CWorld::CWorld() {
 		m_zoom = 1.1;
 		m_xRotate = 0.0;
 		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21, 0.0), NULL, NULL));
-		CPoint p(-0.5, -0.5, 0.0);
-		addResource(new CResource(CResource::RES_TYPE_WATER, p, 1.0f));
+		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(0.3,-0.21, 0.0), NULL, NULL));
+		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(0.3,0.21, 0.0), NULL, NULL));
+		addResource(new CResource(CResource::RES_TYPE_WATER, CPoint(-0.5, -0.5, 0.0), 1.0f));
+		addResource(new CResource(CResource::RES_TYPE_WATER, CPoint(0.5, 0.5, 0.0), 1.0f));
+		addResource(new CResource(CResource::RES_TYPE_FOOD, CPoint(-0.5, 0.5, 0.0), 1.0f));
+		addResource(new CResource(CResource::RES_TYPE_FOOD, CPoint(0.5, -0.5, 0.0), 1.0f));
 	}
 	else {
 		throw 0;
@@ -30,7 +34,7 @@ void CWorld::init(int argc, char ** argv) {
     glutDisplayFunc(CWorld::paint);
 	glutKeyboardFunc(CWorld::keyPress);
 	glutReshapeFunc(CWorld::reshape);
-    glutTimerFunc(100, CWorld::update, 0);	    
+    glutTimerFunc(50, CWorld::update, 0);	    
     glClearColor(0.0,0.0,0.0,0.0);
 	glShadeModel(GL_SMOOTH);
 }
@@ -67,7 +71,7 @@ void CWorld::update(int v) {
 	for(creatureIt = w->m_creatures.begin(); creatureIt != w->m_creatures.end(); creatureIt++) {
 		(*creatureIt)->live(TIME_PER_UPDATE);
 	}
-    glutTimerFunc(100, CWorld::update, 0);
+    glutTimerFunc(50, CWorld::update, 0);
 	glutPostRedisplay();
 }
 
@@ -124,10 +128,23 @@ std::list<CResource*> CWorld::visibleResources(const CCreature & creature, CReso
 	int minY = centerY - creature.vision();
 	int maxY = centerY + creature.vision();
 
+	if(minX < 0) {
+		minX = 0;
+	}
+	if(minY < 0) {
+		minY = 0;
+	}
+	if(maxX >= TILE_COUNT) {
+		maxX = TILE_COUNT - 1;
+	}
+	if(maxY >= TILE_COUNT) {
+		maxY = TILE_COUNT - 1;
+	}
+
 	int i, j;
 	for(i = minX; i < maxX; ++i) {
 		for(j = minY; j < maxY; ++j) {
-			if(!m_resourcePosTypeIndex[i][j][resourceType].empty()){				
+			if(!m_resourcePosTypeIndex[i][j][resourceType].empty()){
 				res.insert(res.begin(),m_resourcePosTypeIndex[i][j][resourceType].begin(), m_resourcePosTypeIndex[i][j][resourceType].end());
 			}
 		}

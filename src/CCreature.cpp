@@ -1,5 +1,6 @@
 #include <GL/glut.h>
-
+#include <algorithm>
+#include <list>
 #include "CCreature.h"
 #include "CTribe.h"
 #include "CWorld.h"
@@ -10,8 +11,10 @@ CCreature::CCreature(Gender gender, const CPoint & center, CTribe * tribe, CCrea
 	m_tribe = tribe;
 	m_parent = parent;
 	m_gender = gender;
-	/// @todo Some constant would be useful.
-	m_vision = 14;
+	m_alive = true;
+	m_followedResource = NULL;
+    m_stepSize = 0.005;	
+	m_vision = 10;
 
 	if(parent) {
 		parent->addChild(*this);
@@ -24,16 +27,27 @@ CCreature::CCreature(Gender gender, const CPoint & center, CTribe * tribe, CCrea
 	m_age = 0;
 	m_health = MAX_HEALTH;
 
-	ResourceNeed need = {
-		0.5,
+	ResourceNeed waterNeed = {
+		0.9,
 		0.1,
 		1.0,
 		0.7,
 		CResource::RES_TYPE_WATER,
+		0.002,
+	};
+
+	ResourceNeed foodNeed = {
+		0.5,
+		0.1,
+		1.0,
+		0.7,
+		CResource::RES_TYPE_FOOD,
 		0.001,
 	};
 
-	m_needs.insert(m_needs.begin(), need);
+
+	m_needs.insert(m_needs.begin(), waterNeed);
+	m_needs.insert(m_needs.begin(), foodNeed);
 }
 
 CCreature::~CCreature() {
@@ -42,6 +56,10 @@ CCreature::~CCreature() {
 	}
 	if(m_parent) {
 		m_parent->removeChild(*this);
+	}
+
+	if(m_followedResource){
+		m_followedResource->unfollow(this);
 	}
 }
 
@@ -96,8 +114,45 @@ void CCreature::live(int time) {
 		std::vector<ResourceNeed>::iterator it;
 		for(it = m_needs.begin(); it != m_needs.end(); ++it) {
 			ResourceNeed & need = *it;
-			need.curAmount -= (need.needPerTime * time);			
-			checkDeath();
+			need.curAmount -= (need.needPerTime * time);
+		}
+		checkDeath();
+		if(m_alive){
+			CWorld * w = CWorld::instance();
+			std::sort(m_needs.begin(), m_needs.end(), CCreature::compareNeeds);
+		
+			if(!m_followedResource || m_followedResource->type() != (*m_needs.begin()).resType){				
+				for(it = m_needs.begin(); it != m_needs.end(); ++it) {
+					ResourceNeed & need = *it;
+					
+					std::list<CResource*> res = w->visibleResources(*this, need.resType);
+					if(res.size() > 0){
+						if(m_followedResource){
+							m_followedResource->unfollow(this);
+						}
+						(*res.begin())->follow(this);
+						break;
+					}
+				}
+			}
+
+			if(m_followedResource){
+				if(intersect(*m_followedResource)){
+					ResourceNeed & need = *m_needs.begin();
+					need.curAmount += m_followedResource->take(need.maxAmount - need.curAmount);
+
+					if(m_followedResource->amount() <= 0){
+						w->removeResource(m_followedResource);
+						delete m_followedResource;						
+					}
+				}
+				else {
+					move(center().angleTo(m_followedResource->center()), m_stepSize);
+				}
+			}
+			else {
+				move(rand()%360, m_stepSize);
+			}
 		}
 	}
 }
@@ -147,7 +202,15 @@ void CCreature::checkDeath() {
 			}
 		}
 	}
-	
+
 	m_alive = !dead;
+}
+
+bool CCreature::compareNeeds(const ResourceNeed & n1, const ResourceNeed & n2) {
+	return (n1.curAmount - n1.minAmount) / n1.needPerTime < (n2.curAmount - n2.minAmount) / n2.needPerTime;
+}
+
+void CCreature::setFollowedResource(CResource * res) {	
+	m_followedResource = res;
 }
 
