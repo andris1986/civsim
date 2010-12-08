@@ -2,10 +2,13 @@
 #include <GL/glut.h>
 #include "CResource.h"
 #include "CCreature.h"
+#include "CWorld.h"
 
 CResource::CResource(CResource::ResourceType type, const CPoint & center, float amount) : CDrawable(center, CResource::DEFAULT_RESOURCE_RADIUS) {
     m_amount = amount;
 	m_type = type;
+
+	CWorld::instance()->addResource(this);
 }
 
 CResource::~CResource() {
@@ -13,6 +16,8 @@ CResource::~CResource() {
 	for(it = m_followers.begin(); it != m_followers.end(); ++it) {
 		(*it)->setFollowedResource(NULL);
 	}
+
+	CWorld::instance()->removeResource(this);
 }
 
 float CResource::amount() const {

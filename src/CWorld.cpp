@@ -17,14 +17,6 @@ CWorld::CWorld() {
 	if(!m_instance) {
 		m_zoom = 1.1;
 		m_xRotate = 0.0;
-		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21, 0.0), NULL, NULL));
-		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(0.3,-0.21, 0.0), NULL, NULL));
-		addCreature(new CCreature(CCreature::GENDER_MALE, CPoint(0.3,0.21, 0.0), NULL, NULL));
-
-        for(int i=0;i<100; i++){
-		    addResource(new CResource(CResource::RES_TYPE_WATER, CPoint(genCoord(), genCoord(), 0.0), 1.0f));
-            addResource(new CResource(CResource::RES_TYPE_FOOD, CPoint(genCoord(), genCoord(), 0.0), 1.0f));
-        }
 	}
 	else {
 		throw 0;
@@ -45,6 +37,15 @@ void CWorld::init(int argc, char ** argv) {
     glClearColor(0.0,0.0,0.0,0.0);
 	glShadeModel(GL_SMOOTH);
     srand(time(NULL));
+
+	new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21, 0.0), NULL, NULL);
+	new CCreature(CCreature::GENDER_MALE, CPoint(0.3,-0.21, 0.0), NULL, NULL);
+	new CCreature(CCreature::GENDER_MALE, CPoint(0.3,0.21, 0.0), NULL, NULL);
+
+    for(int i=0;i<100; i++){
+	    new CResource(CResource::RES_TYPE_WATER, CPoint(genCoord(), genCoord(), 0.0), 1.0f);
+        new CResource(CResource::RES_TYPE_FOOD, CPoint(genCoord(), genCoord(), 0.0), 1.0f);
+    }
 }
 
 void CWorld::paint() {

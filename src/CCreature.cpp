@@ -49,6 +49,8 @@ CCreature::CCreature(Gender gender, const CPoint & center, CTribe * tribe, CCrea
 
 	m_needs.insert(m_needs.begin(), waterNeed);
 	m_needs.insert(m_needs.begin(), foodNeed);
+
+	CWorld::instance()->addCreature(this);
 }
 
 CCreature::~CCreature() {
@@ -62,6 +64,8 @@ CCreature::~CCreature() {
 	if(m_followedResource){
 		m_followedResource->unfollow(this);
 	}
+
+	CWorld::instance()->removeCreature(this);
 }
 
 void CCreature::attack(CCreature & other) {
