@@ -101,6 +101,17 @@ void CCreature::paint() {
 	glTranslatef(-x, -y, -z);
 
 #ifdef CIVSIM_DBG
+	std::list<CCreature*> visibleCreatures = CWorld::instance()->visibleCreatures(*this);
+	std::list<CCreature*>::iterator it;
+	for(it = visibleCreatures.begin(); it != visibleCreatures.end(); ++it) {
+		if(*it != this){
+			glBegin(GL_LINES);
+			glVertex3f(center().x(), center().y(), center().z());
+			glVertex3f((*it)->center().x(), (*it)->center().y(), (*it)->center().z());
+			glEnd();
+		}
+	}
+
 	// Draw border around the creature to see it's visible area
 	float visionDistance = m_vision * (2.0 / CWorld::TILE_COUNT);
 	glBegin(GL_LINE_LOOP);
@@ -175,6 +186,9 @@ void CCreature::live(int time) {
 }
 
 void CCreature::move(float direction, float distance) {
+	int oldX, oldY;
+	loadTilePos(oldX, oldY);
+	CWorld::instance()->updateCreaturePosition(this, oldX, oldY);
 	m_center.move(direction, distance);
 }
 

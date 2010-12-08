@@ -38,9 +38,9 @@ void CWorld::init(int argc, char ** argv) {
 	glShadeModel(GL_SMOOTH);
     srand(time(NULL));
 
-	new CCreature(CCreature::GENDER_MALE, CPoint(-0.3,-0.21, 0.0), NULL, NULL);
-	new CCreature(CCreature::GENDER_MALE, CPoint(0.3,-0.21, 0.0), NULL, NULL);
-	new CCreature(CCreature::GENDER_MALE, CPoint(0.3,0.21, 0.0), NULL, NULL);
+    for(int i=0;i<10;i++){
+    	new CCreature(CCreature::GENDER_MALE, CPoint(genCoord(),genCoord(), 0.0), NULL, NULL);
+    }
 
     for(int i=0;i<100; i++){
 	    new CResource(CResource::RES_TYPE_WATER, CPoint(genCoord(), genCoord(), 0.0), 1.0f);
@@ -161,6 +161,44 @@ std::list<CResource*> CWorld::visibleResources(const CCreature & creature, CReso
 	return res;
 }
 
+std::list<CCreature*> CWorld::visibleCreatures(const CCreature & creature) const {
+	std::list<CCreature*> res;
+	int centerX;
+	int centerY;
+	creature.loadTilePos(centerX, centerY);
+
+	int minX = centerX - creature.vision();
+	int maxX = centerX + creature.vision();
+	int minY = centerY - creature.vision();
+	int maxY = centerY + creature.vision();
+
+	if(minX < 0) {
+		minX = 0;
+	}
+	if(minY < 0) {
+		minY = 0;
+	}
+	if(maxX >= TILE_COUNT) {
+		maxX = TILE_COUNT - 1;
+	}
+	if(maxY >= TILE_COUNT) {
+		maxY = TILE_COUNT - 1;
+	}
+
+	int i, j;
+	for(i = minX; i < maxX; ++i) {
+		for(j = minY; j < maxY; ++j) {
+			if(!m_creaturePosIndex[i][j].empty()){
+				res.insert(res.begin(),m_creaturePosIndex[i][j].begin(), m_creaturePosIndex[i][j].end());
+			}
+		}
+	}
+
+
+	return res;
+
+}
+
 void CWorld::keyPress(unsigned char key, int x, int y) {
 	CWorld * w = CWorld::instance();
 	switch(key) {
@@ -179,4 +217,12 @@ void CWorld::reshape(int w, int h) {
 	glFrustum(-1.0, 1.0, -1.0, 1.0, 1.0, 20.0);
 	glMatrixMode(GL_MODELVIEW);
 	
+}
+
+void CWorld::updateCreaturePosition(CCreature * c, int oldX, int oldY) {
+	m_creaturePosIndex[oldX][oldY].remove(c);
+	int newX, newY;
+	c->loadTilePos(newX, newY);
+	m_creaturePosIndex[oldX][oldY].push_back(c);
+
 }

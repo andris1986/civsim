@@ -96,6 +96,10 @@ public:
 		@return List of visible resources. Pointers to the resources should not be deleted.
 	*/
 	std::list<CResource*> visibleResources(const CCreature & creature, CResource::ResourceType resourceType) const;
+
+	std::list<CCreature*> visibleCreatures(const CCreature & creature) const;
+
+	void updateCreaturePosition(CCreature * c, int oldX, int oldY);
 };
 
 #endif //CWORLD_H
